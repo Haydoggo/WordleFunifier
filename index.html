@@ -1,6 +1,14 @@
-<h1>Hello</h1>
 <body>
     <input type="text"> 🟩
     <input type="text"> 🟨
     <input type="text"> ⬛
 </body>
+<script>
+    async function get_clipboard(){
+        clipboard = await navigator.clipboard.readText()
+        console.log(clipboard)
+        navigator.clipboard.writeText(clipboard)
+    }
+    prompt("🟩🟨⬛", "🟩🟨⬛")
+    get_clipboard()
+</script>
