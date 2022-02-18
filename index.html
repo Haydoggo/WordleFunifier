@@ -1,14 +1,10 @@
-<body>
-    <input type="text"> 🟩
-    <input type="text"> 🟨
-    <input type="text"> ⬛
-</body>
+<body></body>
 <script>
     async function get_clipboard(){
         clipboard = await navigator.clipboard.readText()
-        console.log(clipboard)
         navigator.clipboard.writeText(clipboard)
     }
-    prompt("🟩🟨⬛", "🟩🟨⬛")
+    result = prompt("Enter your substitutions", "🟩🟨⬛")
+    document.body.innerHTML = result
     get_clipboard()
 </script>
