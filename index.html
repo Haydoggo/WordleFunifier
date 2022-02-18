@@ -1,10 +1,41 @@
-<body></body>
+<body>
+    Put wordle here: <textarea id="wordle input"></textarea><br>
+    Put emojis here: <input type="text" id="emoji input" value=🟢🟡⚫><br><br>
+    <b>Output:</b><br><br><span id="output"></span><br><br>
+    <button id="button">copy</button>
+</body>
 <script>
-    async function get_clipboard(){
-        clipboard = await navigator.clipboard.readText()
-        navigator.clipboard.writeText(clipboard)
+    var output = ""
+
+    var wordleInput = document.getElementById("wordle input")
+    var emojiInput = document.getElementById("emoji input")
+    var outputSpan = document.getElementById("output")
+    var copyButton = document.getElementById("button")
+
+    console.log(outputSpan)
+
+    wordleInput.oninput = replaceText
+    emojiInput.oninput = replaceText
+
+    async function replaceText(){
+        emojis = emojiInput.value.match(/(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu)
+        if (emojis == null || emojis.length != 3) {
+            return
+        }
+        text = wordleInput.value
+        console.log.text
+        text = text.replaceAll("🟩", emojis[0])
+        text = text.replaceAll("🟧", emojis[0])
+        text = text.replaceAll("🟨", emojis[1])
+        text = text.replaceAll("🟦", emojis[1])
+        text = text.replaceAll("⬛", emojis[2])
+        text = text.replaceAll("⬜", emojis[2])
+        output = text
+        console.log(text)
+        outputSpan.innerHTML = text.replaceAll("\n", "<br>")
     }
-    result = prompt("Enter your substitutions", "🟩🟨⬛")
-    document.body.innerHTML = result
-    get_clipboard()
+
+    copyButton.onclick = ()=> {
+        navigator.clipboard.writeText(output)
+    }
 </script>
