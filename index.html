@@ -1,8 +1,38 @@
+<style>
+    textarea{
+        font-family: sans-serif;
+        font-size: medium;
+        resize: none;
+        text-align: center;
+        padding: 2ch;
+    }
+    header {
+        font-family: sans-serif;
+        text-align: center;
+    }
+    body {
+        font-family: sans-serif;
+        text-align: center;
+    }
+    div.output {
+        border: 1px solid gray;
+        display: inline-block;
+        padding: 2ch;
+    }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<h1>Wordle funifier</h1>
 <body>
-    Put wordle here: <textarea id="wordle input" rows="9" cols="20"></textarea><br>
-    Put emojis here: <input type="text" id="emoji input" value=🟢🟡⚫><br><br>
-    <b>Output:</b><br><br><span id="output"></span><br><br>
-    <button id="button">copy</button>
+    Paste wordle result:<br>
+    <textarea id="wordle input" rows="9" cols="20"></textarea><br><br>
+    Put replacement emojis here:<br>
+    <input type="text" id="emoji input" value=🟢🟡⚫><br><br>
+    <b>Output:</b><br><br>
+    <div class="output">
+        <span id="output"></span>
+    </div><br><br>
+    <button id="button">Copy</button>
 </body>
 <script>
     var output = ""
@@ -12,30 +42,33 @@
     var outputSpan = document.getElementById("output")
     var copyButton = document.getElementById("button")
 
-    console.log(outputSpan)
-
     wordleInput.oninput = replaceText
     emojiInput.oninput = replaceText
 
     async function replaceText(){
-        emojis = emojiInput.value.match(/(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu)
-        if (emojis == null || emojis.length != 3) {
-            return
-        }
         text = wordleInput.value
-        console.log.text
-        text = text.replaceAll("🟩", emojis[0])
-        text = text.replaceAll("🟧", emojis[0])
-        text = text.replaceAll("🟨", emojis[1])
-        text = text.replaceAll("🟦", emojis[1])
-        text = text.replaceAll("⬛", emojis[2])
-        text = text.replaceAll("⬜", emojis[2])
+        emojis = emojiInput.value.match(/(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu)
+        if (emojis == null) emojis = []
+        if (emojis.length > 0){
+            text = text.replaceAll("🟩", emojis[0])
+            text = text.replaceAll("🟧", emojis[0])
+        }
+        if (emojis.length > 1) {
+            text = text.replaceAll("🟨", emojis[1])
+            text = text.replaceAll("🟦", emojis[1])
+        }
+        if (emojis.length > 2) {
+            text = text.replaceAll("⬛", emojis[2])
+            text = text.replaceAll("⬜", emojis[2])
+        }
         output = text
-        console.log(text)
         outputSpan.innerHTML = text.replaceAll("\n", "<br>")
     }
 
-    copyButton.onclick = ()=> {
+    copyButton.onclick = async ()=> {
         navigator.clipboard.writeText(output)
+        copyButton.textContent = "Copied!"
+        setTimeout( ()=> copyButton.textContent = "Copy", 1000)
+
     }
 </script>
