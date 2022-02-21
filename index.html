@@ -27,7 +27,7 @@
     Paste wordle result:<br>
     <textarea id="wordle input" rows="9" cols="20"></textarea><br><br>
     Put replacement emojis here:<br>
-    <input type="text" id="emoji input" value=🟢🟡⚫><br><br>
+    <input type="text" id="emoji input" value=⚫🟡🟢><br><br>
     <b>Output:</b><br><br>
     <div class="output">
         <span id="output"></span>
@@ -49,17 +49,28 @@
         text = wordleInput.value
         emojis = emojiInput.value.match(/(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu)
         if (emojis == null) emojis = []
+        console.log(emojis.length)
+        // Replace emojis with an intermediate symbol to avoid incorrect replacements of 🟨 and 🟩
         if (emojis.length > 0){
-            text = text.replaceAll("🟩", emojis[0])
-            text = text.replaceAll("🟧", emojis[0])
+            text = text.replaceAll("⬛", "[e_0]")
+            text = text.replaceAll("⬜", "[e_0]")
         }
         if (emojis.length > 1) {
-            text = text.replaceAll("🟨", emojis[1])
-            text = text.replaceAll("🟦", emojis[1])
+            text = text.replaceAll("🟨", "[e_1]")
+            text = text.replaceAll("🟦", "[e_1]")
         }
         if (emojis.length > 2) {
-            text = text.replaceAll("⬛", emojis[2])
-            text = text.replaceAll("⬜", emojis[2])
+            text = text.replaceAll("🟩", "[e_2]")
+            text = text.replaceAll("🟧", "[e_2]")
+        }
+        if (emojis.length > 0){
+            text = text.replaceAll("[e_0]", emojis[0])
+        }
+        if (emojis.length > 1) {
+            text = text.replaceAll("[e_1]", emojis[1])
+        }
+        if (emojis.length > 2) {
+            text = text.replaceAll("[e_2]", emojis[2])
         }
         output = text
         outputSpan.innerHTML = text.replaceAll("\n", "<br>")
